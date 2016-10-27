@@ -6,7 +6,7 @@
 \usepackage{parskip} % Keine Einrückung, aber Abstand zwischen Absätzen
 \usepackage{graphicx} % Grafiken einbinden
 
-\geometry{margin=1.5cm}
+\geometry{margin=1.5cm,bottom=2.5cm}
 
 % Zu bestimmende Größen
 \newcommand{\RE}{r_E} % Radius der Erde
@@ -58,15 +58,15 @@
   \person{Aristoteles} (384-322 v. Chr.) vermutete aus folgendem Grund, dass die Erde eine Kugel ist:
   Er erkannte den Schattenwurf der Erde als Grund für Mondfinsternisse.
   Da währenddessen der Schatten der Erde auf dem Mond immer eine runde Form besitzt, glaubte er, die Erde müsse rund sein.
-  Aristoteles wusste auch, dass es Sterne gibt, die man von Ägypten aus sehen kann, aber nicht von Griechenland aus.
+  Aristoteles wusste auch, dass es Sterne gibt, die man von Ägypten aus sehen kann, aber nicht von Griechenland aus. Die naheliegende Erklärung dafür ist, dass die Erdoberfläche gekrümmt ist.
 
   \person{Eratosthenes} (276-194 v. Chr.) hat folgende Beobachtung gemacht:
 
   Zur Sonnenwende, Mittagszeit, scheint die Sonne genau senkrecht in die Brunnen in Asène, sodass kein Schatten auf der Wasseroberfläche sichtbar ist.
-  Am selben Tag, zu derselben Zeit schien die Sonne mit einem Winkel von etwa $7^\circ$ in einen Brunnen in Alexandria. Von Händlern kannte er die ungefähre Entfernung zwischen Alexandria und Asène.
+  Am selben Tag, zu derselben Zeit scheint die Sonne mit einem Winkel von etwa $7^\circ$ in einen Brunnen in Alexandria. Von Händlern kannte er die ungefähre Entfernung zwischen Alexandria und Asène.
 
   Asène (heute Assuad) liegt auf dem nördlichen Wendekreis.
-  Beide Städte liegen im heutigen Ägypten und sind ca. 845km voneinander entfernt.
+  Beide Städte liegen im heutigen Ägypten und sind ca. $845 \km$ voneinander entfernt.
   % Quelle: http://www.distance.to/Alexandria-egypt/Assuan
 
   Wie konnte er aus diesen Daten und Beobachtungen den Erdradius $\RE$ bestimmen?
@@ -75,9 +75,7 @@
 
   \vspace{1em}
 
-  \begin{center}
-    \includegraphics{egypt_sat.png}
-  \end{center}
+  \includegraphics[width=4cm]{egypt_sat.png}
 
   \newpage
 
@@ -137,10 +135,15 @@
 
   Ein Monduntergang dauert ca. zwei Minuten.
 
+  \begin{center}
+    \includegraphics[width=6cm]{monduntergang.jpg}
+  \end{center}
+
   Wie konnte er daraus den Radius $\RM$ des Mondes bestimmen?
 
   \newpage
-  \newpage{Lösung}
+  \newpage
+  \subsection{Lösung}
 
   Bei seinem täglichen scheinbaren Umlauf hat der Mond eine Bahngeschwindigkeit von
   \[ \tilde{\VM} = \frac{2\pi \cdot \DM}{1 \days} = \frac{2\pi \cdot 384400 \km}{24 \cdot 3600 \seco} \approx 28,0 \km / \seco. \]
@@ -197,6 +200,8 @@
     \RS = 696.300 \km.
   \]
 
-  Wir liegen also etwas daneben mit unserer Rechnung. (Vielleicht ist die Messung von einer Stunde auch nicht so ganz genau.) Aber zumindest stimmt die Größenordnung. Die Sonne ist also $696.300 \km / 6370 \km = 109$ Mal so groß wie die Erde.
+  Wir liegen also etwas daneben mit unserer Rechnung. (Vielleicht ist die Messung von einer halben Stunde auch nicht so ganz genau.) Aber zumindest stimmt die Größenordnung. Die Sonne ist also $696.300 \km / 6370 \km = 109$ Mal so groß wie die Erde.
   \person{Aristarchos} fand deshalb die Vorstellung, die Sonne würde um die Erde kreisen, lächerlich. Er vertrat deshalb das heliozentrische Weltbild -- 1700 Jahre vor Kopernikus!
+
+  % TODO: Größen-Vergleiche finden (wenn die Sonne ein Pezziball ist, dann ist die Erde ... und ... m entfernt)
 \end{document}
