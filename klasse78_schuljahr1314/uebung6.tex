@@ -1,0 +1,128 @@
+\documentclass{uebungszettel}
+\graphicspath{ . }
+
+\newcommand{\N}{\mathbb{N}} % Natürliche Zahlen
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\usepackage{tikz}
+\usepackage{wrapfig}
+
+
+\begin{document}
+\pagestyle{empty}
+
+\maketitle{Klasse 7./8. -- Gruppe 3}{27. Juni 2014}
+
+Eine \emph{Menge} ist eine Sammlung mathematischer Objekte. Eine Menge kann man durch Auflistung der enthaltenen Objekte angeben. Es gibt beispielsweise die Mengen
+
+\begin{align*}
+  \N & := \{ 1, 2, 3, ... \} \\
+  \Z & := \{ -2, -1, 0, 1, 2, ... \}
+\end{align*}
+
+der natürlichen bzw. ganzen Zahlen. Die in einer Menge enthaltenen Objekte heißen \emph{Elemente} der Menge. Diese müssen keine Zahlen sein: Wir können beispielsweise auch die Menge $M := \{ \clubsuit, \diamondsuit, \heartsuit, \spadesuit \}$ der Farben beim Kartenspiel bilden. Wenn ein mathematisches Objekt $x$ ein Element einer Menge $Y$ (Mengen werden üblicherweise mit Großbuchstaben bezeichnet) ist, dann schreiben wir $x \in Y$ (lies: "`$x$ ist ein Element von $Y$"'). Beispielsweise gilt hier:
+
+\[
+  2 \in \N, \quad 6 \in \Z, \quad -313 \in \Z, \quad \heartsuit \in M, \quad 4 \not\in M, \quad -3 \not\in \N
+\]
+
+Die beiden durchgestrichenen Symbole am Ende sollen andeuten, dass die Aussage gerade nicht, also dass $4$ kein Element von $M$ und $-3$ keine natürliche Zahl ist.
+
+Für eine natürliche Zahl $n \in \N$ definieren wir die Menge $[n]$ als die Menge aller natürlichen Zahlen, die kleiner oder gleich $n$ sind, also
+
+\begin{align*}
+  [1] &= \{ 1 \}, \\
+  [3] &= \{ 1, 2, 3 \}, \\
+  [n] &= \{ 1, 2, 3, ..., n \}.
+\end{align*}
+
+Eine Menge $X$ heißt eine \emph{Teilmenge} einer Menge $Y$ (notiert $X \subseteq Y$), falls jedes Element aus $X$ auch in $Y$ enthalten ist. Jede natürliche Zahl ist auch eine ganze Zahl, also ist die Menge der natürlichen Zahlen eine Teilmenge der Menge der ganzen Zahlen ($\N \subseteq \Z$).
+
+Die Menge $[3]$ enthält folgende Teilmengen:
+
+\[
+  \{ \}, \{ 1 \}, \{ 1, 2 \}, \{ 1, 3 \}, \{ 1, 2, 3 \}, \{ 2 \}, \{ 2, 3 \}, \{ 3 \}
+\]
+
+Das Symbol $\emptyset$ bezeichnet die leere Menge, d.\,h. die Menge, die überhaupt keine Elemente enthält.
+
+Teilmengen einer gegebenen Menge $X$ sind selbst mathematische Objekte. Wir können daher die Menge aller Teilmengen von $X$ bilden. Diese Menge wird die \emph{Potenzmenge} von $X$ genannt und mit $\mathcal{P}(X)$ bezeichnet. Wir haben oben alle Teilmengen der Menge $[3]$ aufgelistet. Wir können daran sofort sehen, dass $\mathcal{P}([3])$ genau acht Elemente enthält.
+
+\begin{aufgabe}{}
+  Zähle nach, dass die Menge $M := \{ \clubsuit, \diamondsuit, \heartsuit, \spadesuit \}$ genau $16$ Elemente enthält.
+\end{aufgabe}
+
+Seien $X$ und $Y$ Mengen. Eine Funktion $f : X \to Y$ von $X$ nach $Y$ ordnet jedem Element $x \in X$ genau ein Element $f(x) \in Y$ zu.
+
+Eine Funktion $f : \Z \to \N$ aus der Menge der ganzen Zahlen in die Menge der natürlichen Zahlen ist die Funktion
+
+\[
+  f : \Z \to \N, \quad f(z) := \begin{cases}
+    1, & \text{falls } z < 1, \\
+    z, & \text{falls } z \geq 1.
+  \end{cases}
+\]
+
+Diese Funktion haben wir durch Fallunterscheidung definiert: Für Zahlen $z \in \Z$ kleiner $1$ soll $f(z) = 1$, für Zahlen $z \in \Z$ größer gleich $1$ soll $f(z) = z$ sein (wenn $z \in \Z$ größer gleich $1$ ist, so ist $z$ ja eine natürliche Zahl).
+Ein anderes Beispiel ist die Funktion
+
+\[
+  g : [2] \to M, \quad f(1) := \heartsuit, \enspace f(2) := \diamondsuit.
+\]
+
+Nun kann es vorkommen, dass zwei eine Funktion zwei verschiedenen Elementen das gleiche Element zuordnet. Für $f$ gilt beispielsweise $f(-2) = 1 = f(1)$.
+
+Jede natürliche Zahl $n \in \N$ ist auch eine ganze Zahl und $f$ ist so definiert, dass $f(n) = n$ gilt. Somit gibt es für jede natürliche Zahl $n \in \Z$ eine ganze Zahl $z \in \Z$ mit $f(z) = n$. Das muss aber nicht der Fall sein: Die Funktion $g$ ordnet der Zahl $1$ die Farbe $\heartsuit$ und der Zahl $2$ die Farbe $\diamondsuit$ zu. Den Farben $\spadesuit$ und $\clubsuit$ wird keine Zahl zugeordnet.
+
+Eine \emph{Bijektion} zwischen Mengen $X$ und $Y$ ist eine Funktion $f : X \to Y$, bei die in den letzten beiden Absätze beschriebenen Phänomene nicht auftreten. Anders gesagt, jedem Element $x \in X$ wird genau ein Element $f(x) \in Y$ zugeordnet und zwar so, dass
+
+\begin{itemize}
+  \item unterschiedlichen Elementen aus $X$ unterschiedliche Elemente aus $Y$ zugeordnet werden und
+  \item jedem Element aus $Y$ ein Element aus $X$ zugeordnet wird.
+\end{itemize}
+
+Wenn für zwei Mengen $X$ und $Y$ eine solche Bijektion existiert, dann nennen wir die Mengen zueinander \emph{bijektiv}. Wir schreiben dann $X \cong Y$.
+
+\begin{aufgabe}{}
+  Zeige, dass $[4] \cong M$ gilt. Ist die Bijektion eindeutig oder gibt es mehrere Bijektionen von $[4]$ nach $M$?
+\end{aufgabe}
+
+\begin{aufgabe}{}
+  Mache dir klar: Jede Menge ist zu sich selbst bijektiv.
+\end{aufgabe}
+
+\begin{aufgabe}{}
+  Es gelte $X \cong Y$. Warum gilt dann auch $Y \cong X$?
+\end{aufgabe}
+
+Bijektionen sind also Eins-zu-Eins-Beziehungen zwischen zwei Mengen. Jedes Element aus $X$ steht in Beziehung zu genau einem Objekt aus $Y$ und umgekehrt.
+
+Seien $X$ und $Y$ zwei Mengen.
+
+\begin{itemize}
+  \item Die \emph{Vereinigung} $X \cup Y$ von $X$ und $Y$ ist die Menge, die alle Elemente von $X$ und alle Elemente von $Y$ enthält.
+  \item Das Produkt $X \times Y$ von $X$ und $Y$ ist die Menge aller Paare mit einem Element aus $x$ und einem Element aus $Y$.
+\end{itemize}
+
+\begin{aufgabe}{}
+  Zeige: Für Mengen $A, B, C, D$ mit $A \cong B$ und $C \cong D$ gilt:
+  \begin{itemize}
+    \item $A \times C \cong B \times D$
+    \item $A \coprod C \cong B \coprod D$
+  \end{itemize}
+\end{aufgabe}
+
+\begin{aufgabe}{}
+  Zeige:
+  \begin{itemize}
+    \item $[n] \coprod [m] \cong [n+m]$
+    \item $[n] \times [m]$
+  \end{itemize}
+\end{aufgabe}
+
+\begin{aufgabe}{}
+  Benutze die beiden vorherigen Aufgaben, um eine natürliche Zahl $q \in \N$ anzugeben mit $M \times 3 \cong [q]$!
+\end{aufgabe}
+
+\end{document}
