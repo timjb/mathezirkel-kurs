@@ -1,0 +1,28 @@
+name:                diagrams-binomialcoefficients
+version:             0.1.0.0
+synopsis:            Draws pictures of combinatorial proofs for equations
+                     involving binomial coefficients.
+description:         Many equations involving binomial coefficients have simple
+                     combinatorial proofs. These proofs can be illustrated by
+                     simple drawings. This library can generate these for you.
+homepage:            https://github.com/timjb/mathezirkel-kurs/tree/master/binomialkoeffizienten/diagrams-binomialcoefficients
+license:             BSD3
+license-file:        LICENSE
+author:              Tim Baumann
+maintainer:          tim@timbaumann.info
+copyright:           MIT License
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Diagrams.BinomialCoefficients
+  build-depends:       base >= 4.7 && < 5,
+                       diagrams-lib
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/timjb/mathezirkel-kurs
