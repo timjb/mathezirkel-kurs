@@ -1,5 +1,4 @@
 {-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE PartialTypeSignatures #-}
@@ -25,51 +24,73 @@ teal, fuchsia :: (Ord a, Floating a) => Colour a
 teal = sRGB24 57 204 204
 fuchsia = sRGB24 240 18 190
 
-data Element a
-  = InSubset a
-  | PerDefaultInSubset a
+data Element
+  = InSubset
+  | PerDefaultInSubset
   | NotInSubset
   | Phantom
-  deriving (Functor)
+  deriving (Eq)
 
-binomList :: Int -> Int -> [[Element ()]]
+data ColourScheme
+  = ColourScheme
+  { dotColour :: Colour Double
+  , selectionColour :: Colour Double
+  }
+
+type Subset = [Element]
+type ColouredSubset = [(Element, ColourScheme)]
+
+simpleColourScheme
+  :: Colour Double -- ^ selection colour
+  -> ColourScheme
+simpleColourScheme c =
+  ColourScheme
+  { dotColour = black
+  , selectionColour = c
+  }
+
+colourise :: ColourScheme -> Subset -> ColouredSubset
+colourise scheme = flip zip (repeat scheme)
+
+binomList :: Int -> Int -> [Subset]
 binomList n k =
   case (n, k) of
     (n, 0) -> [replicate n NotInSubset]
     (0, k) -> []
     (n, k) ->
       ((NotInSubset :) <$> binomList (n-1) k) ++
-      ((InSubset () :)  <$> binomList (n-1) (k-1))
+      ((InSubset :)  <$> binomList (n-1) (k-1))
 
 subsetDiagram
   :: forall n b. BCBackend n b
-  => [Element (Colour Double)]
+  => ColouredSubset
   -> QDiagram b V2 n Any
-subsetDiagram subset =
-  mconcat $ zipWith renderElement [0..] subset
+subsetDiagram colouredSubset =
+  mconcat $ zipWith renderElement [0..] colouredSubset
   where
-    renderElement :: Int -> Element (Colour Double) -> _
-    renderElement i element =
+    cardinality = length colouredSubset
+    renderElement :: Int -> (Element, ColourScheme) -> _
+    renderElement i (element, scheme) =
       let
         el =
           case element of
-            InSubset colour ->
-              circle 3 # lwL 2 # lc colour # fc black
+            InSubset ->
+              circle 3 # lwL 2 # lc (selectionColour scheme) # fc (dotColour scheme)
             NotInSubset ->
-              circle 3.5 # fc black
+              circle 3.5 # lw 0 # fc (dotColour scheme)
             Phantom ->
               circle 3.25 # lwL 0.5 # lc gray # fc lightgray
-            PerDefaultInSubset colour ->
-              circle 3 # lwL 2 # lc colour # fc lightgray
+            PerDefaultInSubset ->
+              circle 3 # lwL 2 # lc (selectionColour scheme) # fc lightgray
       in
         el
           # translateY 9
-          # rotateBy (fromIntegral i / fromIntegral (length subset))
+          # rotateBy (- fromIntegral i / fromIntegral cardinality)
           # withEnvelope (circle 14 :: D V2 n)
-        
+
 subsetGallery
   :: BCBackend n b
-  => [[Element (Colour Double)]]
+  => [ColouredSubset]
   -> QDiagram b V2 n Any
 subsetGallery =
   foldr (|||) mempty .
@@ -97,42 +118,130 @@ sepWithRuler a b =
 
 bcAdditionFormulaDiagram
   :: BCBackend n b
-  => Colour Double
-  -> Int -> Int
+  => ColourScheme
+  -> Int -- ^ n
+  -> Int -- ^ k
   -> QDiagram b V2 n Any
-bcAdditionFormulaDiagram colour n k =
-  subsetGallery (colourise . (Phantom :) <$> binomList (n-1) k)
+bcAdditionFormulaDiagram scheme n k =
+  subsetGallery (colourise scheme . (Phantom :) <$> binomList (n-1) k)
   `sepWithRuler`
-  subsetGallery (colourise . (PerDefaultInSubset () :) <$> binomList (n-1) (k-1))
-  where
-    colourise = ((colour <$) <$>)
+  subsetGallery (colourise scheme . (PerDefaultInSubset :) <$> binomList (n-1) (k-1))
 
 bcComplementFormulaDiagram
   :: BCBackend n b
-  => Colour Double
-  -> Colour Double
-  -> Int -> Int
+  => ColourScheme
+  -> ColourScheme
+  -> Int -- ^ n
+  -> Int -- ^ k
   -> QDiagram b V2 n Any
-bcComplementFormulaDiagram colour complColour n k =
-  subsetGallery (colourise colour <$> subsets)
+bcComplementFormulaDiagram primaryScheme complementaryScheme n k =
+  subsetGallery (colourise primaryScheme <$> subsets)
   ===
-  subsetGallery (colourise complColour . fmap complement <$> subsets)
+  subsetGallery (colourise complementaryScheme . fmap complement <$> subsets)
   where
     subsets = binomList n k
-    colourise c = ((c <$) <$>)
     complement element =
       case element of
-        InSubset () -> NotInSubset
-        NotInSubset -> InSubset ()
-        PerDefaultInSubset () -> Phantom
-        Phantom -> PerDefaultInSubset ()
-        
+        InSubset -> NotInSubset
+        NotInSubset -> InSubset
+        PerDefaultInSubset -> Phantom
+        Phantom -> PerDefaultInSubset
+
+shiftedBcsFormulaDiagram
+  :: BCBackend n b
+  => Int -- ^ n
+  -> Int -- ^ m
+  -> QDiagram b V2 n Any
+shiftedBcsFormulaDiagram n m =
+  foldr (===) mempty $
+  map (subsetGallery . map (colourise (simpleColourScheme teal))) $ do
+    i <- [0..m]
+    let prefix = replicate (m - i) Phantom ++ [PerDefaultInSubset]
+    [(prefix ++) <$> binomList (n+i) n]
+
+alternatingBcsFormulaDiagram
+  :: BCBackend n b
+  => Int -- ^ n
+  -> QDiagram b V2 n Any
+alternatingBcsFormulaDiagram n =
+  --foldr (===) mempty $
+  --map (subsetGallery . map colourise) $
+  let 
+    indexedBinomLists = map (\k -> (k, indexedBinomList n k)) [0..n]
+    indexedBinomList n k =
+      zipWith (\subset i -> (i, subset)) (binomList n k) [0..]
+    subsetDiagrams =
+      foldr (===) mempty $
+      map (uncurry namedSubsetGallery) indexedBinomLists
+    connections = do
+      ((k, subsetsK), (l, subsetsL)) <- zip indexedBinomLists (tail indexedBinomLists)
+      let
+        notExtensionsK = map ((,) k . fst) $ filter (not . isExtension . snd) subsetsK
+        matchingExtensionsL = map ((,) l . fst) $ filter (isExtension . snd) subsetsL
+      zip notExtensionsK matchingExtensionsL
+    arrowOpts =
+      with
+        & arrowHead .~ noHead
+        & shaftStyle %~ lineColor gray
+    drawConnection = connectOutside' arrowOpts
+  in
+    subsetDiagrams # applyAll (map (uncurry drawConnection) connections)
+  where
+    namedSubsetGallery k indexedSubsets =
+      foldr (|||) mempty $
+      map (\(j, subset) -> padY 2 $ padX 1.1 $ namedSubsetDiagram (k, j) subset) indexedSubsets
+        --pure (P (V2 (j*11) (k*11)), subsetDiagram subset)
+    namedSubsetDiagram :: (Int, Int) -> Subset -> _
+    namedSubsetDiagram kj subset =
+      (subsetDiagram (colourise (simpleColourScheme teal) subset)
+      `atop`
+      (circle 15 # fc white) # lw 0) # named kj
+    isExtension :: [Element] -> Bool
+    isExtension xs =
+      case xs of
+        InSubset : InSubset : _ -> True
+        NotInSubset : xs -> isExtension xs
+        [InSubset] -> True -- special case
+        _ -> False
+
+vandermondIdentityDiagram
+  :: BCBackend n b
+  => ColourScheme
+  -> ColourScheme
+  -> Int -- ^ m
+  -> Int -- ^ n
+  -> Int -- ^ k
+  -> QDiagram b V2 n Any
+vandermondIdentityDiagram schemeM schemeN m n k =
+  foldr1 sepWithRuler $
+  map block [0..k]
+  where
+    block j =
+      let
+        subsetsM = colourise schemeM <$> binomList m j
+        subsetsN = colourise schemeN <$> binomList n (k-j)
+        blockRow subsetM =
+          foldr (|||) mempty $
+          map (\subsetN -> subsetDiagram (subsetM ++ subsetN)) $
+          subsetsN
+      in
+        foldr (===) mempty $
+        map blockRow subsetsM
+
 testDia
   :: BCBackend n b
   => QDiagram b V2 n Any
 testDia =
-  bcAdditionFormulaDiagram teal 5 3
+  bcAdditionFormulaDiagram (simpleColourScheme teal) 5 3
   ===
-  bcAdditionFormulaDiagram fuchsia 6 3
+  bcComplementFormulaDiagram (simpleColourScheme teal) (simpleColourScheme fuchsia) 5 3
   ===
-  bcComplementFormulaDiagram teal fuchsia 5 3
+  shiftedBcsFormulaDiagram 2 3
+  ===
+  alternatingBcsFormulaDiagram 5
+  ===
+  vandermondIdentityDiagram schemeM schemeN 4 3 2
+  where
+    schemeM = ColourScheme { dotColour = darkgreen, selectionColour = green }
+    schemeN = ColourScheme { dotColour = darkred, selectionColour = red }
+    
