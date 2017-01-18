@@ -14,7 +14,7 @@
 \RequirePackage{multicol}
 
 \RequirePackage{geometry}
-\geometry{tmargin=2cm,bmargin=2cm,lmargin=3cm,rmargin=3cm}
+\geometry{tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
 \pagestyle{empty}
 
 \setlength\parskip{\medskipamount}

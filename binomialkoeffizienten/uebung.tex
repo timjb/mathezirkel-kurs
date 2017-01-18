@@ -7,12 +7,129 @@
 \begin{document}
 \pagestyle{empty}
 
-\maketitle{Klasse 8/9}{20. Januar 2016}
+\maketitle{Klasse 8/9}{20. Januar 2017}
+
+\begin{aufgabe}{Symmetrie der Binomialkoeffizienten}
+  Es gilt ${n \choose k} = {n \choose n-k}$.
+  Kannst du dies anhand des folgenden Diagramms beweisen?
+  
+\begin{diagram}
+import Diagrams.BinomialCoefficients
+import qualified NiceColours as NC
+
+dia =
+  bcSymmetryDiagram
+    (ColourScheme { dotColour = black, selectionColour = NC.blue })
+    (ColourScheme { dotColour = black, selectionColour = NC.green })
+    5 3
+\end{diagram}
+\end{aufgabe}
+
+\begin{aufgabe}{Eine Rekursionsformel mit Addition}
+  Für $n \geq 1$ und $k \geq 1$ gilt ${n \choose k} = {n-1 \choose k-1} + {n-1 \choose k}$.
+  Kannst du dies anhand des folgenden Diagramms (das den Fall $n = 6$ und $k = 4$ zeigt) beweisen?
+  
+\begin{diagram}
+import Diagrams.BinomialCoefficients
+import qualified NiceColours as NC
+
+dia =
+  bcAdditionIdentityDiagram
+    (ColourScheme { dotColour = black, selectionColour = NC.teal })
+    6 4
+\end{diagram}
+\end{aufgabe}
+
+\begin{aufgabe}{Das Pascalsche Dreieck}
+  TODO
+\end{aufgabe}
+
+\begin{aufgabe}{Eine Rekursionsformel mit Multiplikation}
+  Für $n \geq 1$ und $k \geq 1$ gilt $k \cdot {n \choose k} = n \cdot {n-1 \choose k-1}$.
+  Das folgende Diagram soll dies im Fall $n=5$ und $k=3$ zeigen: 
+  $3 \cdot {5 \choose 3} = 5 \cdot {4 \choose 2}$.
+  Kannst du den Beweis erklären?
+  
+\begin{diagram}
+import Diagrams.BinomialCoefficients
+import qualified NiceColours as NC
+
+dia =
+  bcMultiplicativeIdentityDiagram
+    (ColourScheme { dotColour = black, selectionColour = NC.red })
+    (ColourScheme { dotColour = NC.yellow, selectionColour = NC.red })
+    5 3
+\end{diagram}
+\end{aufgabe}
+
+\begin{aufgabe}{Summe verschobener Binomialkoeffizienten}
+  Für alle $n \geq 0$ und $m \geq 0$ gilt die Gleichung
+  \[
+    {n+m+1 \choose n+1} = {n \choose n} + {n+1 \choose n} + \ldots + {n+m \choose n-1} + {n+m \choose n}.
+  \]
+  Erkläre diese Gleichung mit der Skizze, die den Fall $n=2$ und $m=3$ zeigt!
+  
+\begin{diagram}
+import Diagrams.BinomialCoefficients
+import qualified NiceColours as NC
+
+dia =
+  shiftedBcsIdentityDiagram
+    (simpleColourScheme NC.orange)
+    2 3
+\end{diagram}
+\end{aufgabe}
+
+\begin{aufgabe}{Vandermondesche Identität}
+  Die \emph{Vandermondesche Identität} besagt, dass für alle~$m$, $n$ und~$k$ gilt:
+  \[
+    {m+n \choose k} = {m \choose 0} \cdot {n \choose k} + {m \choose 1} \cdot {n \choose k-1} + \ldots + {m \choose k-1} \cdot {n \choose 1} + {m \choose k} \cdot {n \choose 0}
+  \]
+  Für $m=4$, $n=3$ und $k=2$ gilt also
+  \[
+    {4+3 \choose 2} = {4 \choose 0} \cdot {3 \choose 2} + {4 \choose 1} \cdot {3 \choose 1} + {4 \choose 2} \cdot {3 \choose 1}.
+  \]
+  Warum gilt diese Gleichung?
+  Das kannst du anhand der Abbildung für den Fall $m = 3$, $n = 4$, $k = 3$ nachvollziehen:
 
 \begin{diagram}
 import Diagrams.BinomialCoefficients
+import qualified NiceColours as NC
 
-dia = return testDia
+dia =
+  vandermondIdentityDiagram schemeM schemeN 3 4 3
+  where
+    schemeM = ColourScheme { dotColour = darkgreen, selectionColour = NC.green }
+    schemeN = ColourScheme { dotColour = darkred, selectionColour = NC.red }
 \end{diagram}
+\end{aufgabe}
+
+\begin{aufgabe}{Alternierende Summe von Binomialkoeffizienten}
+  Für alle natürlichen Zahlen~$n$ gilt:
+  \[
+    {n \choose 0} - {n \choose 1} + {n \choose 2} - \ldots \pm {n \choose n-1} \mp {n \choose n} = 0
+  \]
+  Dabei addiert man alle Zahlen ${n \choose k}$ mit~$k$ gerade und subtrahiert von dieser Summe alle Zahlen ${n \choose k}$ mit $k$~ungerade.
+  Erkläre folgenden Beweis ohne Worte für diese Gleichung!
+
+\begin{center}
+\begin{diagram}
+import Diagrams.BinomialCoefficients
+import qualified NiceColours as NC
+
+dia =
+  alternatingBcsIdentityDiagram (simpleColourScheme olive) 6
+    # center
+    # rotateBy (-0.25)
+    # scale 0.8
+\end{diagram}
+\end{center}
+
+{\footnotesize Tipp: Wie viele Fünfer-Cliquen sind in jeder Zeile? Wann sind zwei Cliquen verbunden? Es kann hilfreich sein, die fünf Kreise jeder Clique durchzunummerieren von eins bis fünf, angefangen beim obersten Kreis.}
+\end{aufgabe}
+
+\begin{aufgabe}{Wege im Gitter}
+  TODO
+\end{aufgabe}
 
 \end{document}

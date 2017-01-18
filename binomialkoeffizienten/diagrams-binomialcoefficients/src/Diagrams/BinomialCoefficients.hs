@@ -4,25 +4,29 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TupleSections #-}
 
 module Diagrams.BinomialCoefficients
   ( binomList
   , subsetDiagram
-  , testDia
+  , BCBackend
+  , ColourScheme (..)
+  , simpleColourScheme
+  , bcAdditionIdentityDiagram
+  , bcSymmetryDiagram
+  , shiftedBcsIdentityDiagram
+  , alternatingBcsIdentityDiagram
+  , bcMultiplicativeIdentityDiagram
+  , vandermondIdentityDiagram
   ) where
 
-import Diagrams.Prelude hiding (teal, fuchsia)
+import Diagrams.Prelude
 import Data.Maybe (fromJust)
 
 type BCBackend n b =
   ( Renderable (Path V2 n) b
   , TypeableFloat n
   )
-
--- Nice colours from http://clrs.cc/
-teal, fuchsia :: (Ord a, Floating a) => Colour a
-teal = sRGB24 57 204 204
-fuchsia = sRGB24 240 18 190
 
 data Element
   = InSubset
@@ -58,8 +62,8 @@ binomList n k =
     (n, 0) -> [replicate n NotInSubset]
     (0, k) -> []
     (n, k) ->
-      ((NotInSubset :) <$> binomList (n-1) k) ++
-      ((InSubset :)  <$> binomList (n-1) (k-1))
+      ((InSubset :)  <$> binomList (n-1) (k-1)) ++
+      ((NotInSubset :) <$> binomList (n-1) k)
 
 subsetDiagram
   :: forall n b. BCBackend n b
@@ -68,7 +72,8 @@ subsetDiagram
 subsetDiagram colouredSubset =
   mconcat $ zipWith renderElement [0..] colouredSubset
   where
-    cardinality = length colouredSubset
+    cardinality = fromIntegral (length colouredSubset)
+    radius = cardinality * (8/5)
     renderElement :: Int -> (Element, ColourScheme) -> _
     renderElement i (element, scheme) =
       let
@@ -84,9 +89,9 @@ subsetDiagram colouredSubset =
               circle 3 # lwL 2 # lc (selectionColour scheme) # fc lightgray
       in
         el
-          # translateY 9
-          # rotateBy (- fromIntegral i / fromIntegral cardinality)
-          # withEnvelope (circle 14 :: D V2 n)
+          # translateY radius
+          # rotateBy (- fromIntegral i / cardinality)
+          # withEnvelope (circle (1.4*radius) :: D V2 n)
 
 subsetGallery
   :: BCBackend n b
@@ -94,7 +99,7 @@ subsetGallery
   -> QDiagram b V2 n Any
 subsetGallery =
   foldr (|||) mempty .
-  map (pad 1.2 . subsetDiagram)
+  map (pad 1.3 . subsetDiagram)
   
 sepWithRuler
   :: BCBackend n b
@@ -116,25 +121,27 @@ sepWithRuler a b =
   in
     a ||| strutX 4 ||| ruler ||| strutX 4 ||| b
 
-bcAdditionFormulaDiagram
+-- | Proof that (n+1 choose k+1) = (n choose k) + (n choose k+1)
+bcAdditionIdentityDiagram
   :: BCBackend n b
   => ColourScheme
   -> Int -- ^ n
   -> Int -- ^ k
   -> QDiagram b V2 n Any
-bcAdditionFormulaDiagram scheme n k =
+bcAdditionIdentityDiagram scheme n k =
   subsetGallery (colourise scheme . (Phantom :) <$> binomList (n-1) k)
-  `sepWithRuler`
+  ===
   subsetGallery (colourise scheme . (PerDefaultInSubset :) <$> binomList (n-1) (k-1))
 
-bcComplementFormulaDiagram
+-- | Proof that (n choose k) = (n choose n-k)
+bcSymmetryDiagram
   :: BCBackend n b
   => ColourScheme
   -> ColourScheme
   -> Int -- ^ n
   -> Int -- ^ k
   -> QDiagram b V2 n Any
-bcComplementFormulaDiagram primaryScheme complementaryScheme n k =
+bcSymmetryDiagram primaryScheme complementaryScheme n k =
   subsetGallery (colourise primaryScheme <$> subsets)
   ===
   subsetGallery (colourise complementaryScheme . fmap complement <$> subsets)
@@ -147,32 +154,34 @@ bcComplementFormulaDiagram primaryScheme complementaryScheme n k =
         PerDefaultInSubset -> Phantom
         Phantom -> PerDefaultInSubset
 
-shiftedBcsFormulaDiagram
+-- | Proof that (n choose n) + (n+1 choose n) + ... + (n+m-1 choose n) = (n+m choose n+1)
+shiftedBcsIdentityDiagram
   :: BCBackend n b
-  => Int -- ^ n
+  => ColourScheme
+  -> Int -- ^ n
   -> Int -- ^ m
   -> QDiagram b V2 n Any
-shiftedBcsFormulaDiagram n m =
+shiftedBcsIdentityDiagram colourScheme n m =
   foldr (===) mempty $
-  map (subsetGallery . map (colourise (simpleColourScheme teal))) $ do
+  map (subsetGallery . map (colourise colourScheme)) $ do
     i <- [0..m]
     let prefix = replicate (m - i) Phantom ++ [PerDefaultInSubset]
     [(prefix ++) <$> binomList (n+i) n]
 
-alternatingBcsFormulaDiagram
+-- | Proof that sum_i (-1)^i (n choose i) = 0
+alternatingBcsIdentityDiagram
   :: BCBackend n b
-  => Int -- ^ n
+  => ColourScheme
+  -> Int -- ^ n
   -> QDiagram b V2 n Any
-alternatingBcsFormulaDiagram n =
-  --foldr (===) mempty $
-  --map (subsetGallery . map colourise) $
+alternatingBcsIdentityDiagram colourScheme n =
   let 
     indexedBinomLists = map (\k -> (k, indexedBinomList n k)) [0..n]
     indexedBinomList n k =
       zipWith (\subset i -> (i, subset)) (binomList n k) [0..]
     subsetDiagrams =
       foldr (===) mempty $
-      map (uncurry namedSubsetGallery) indexedBinomLists
+      map (center . uncurry namedSubsetGallery) indexedBinomLists
     connections = do
       ((k, subsetsK), (l, subsetsL)) <- zip indexedBinomLists (tail indexedBinomLists)
       let
@@ -190,10 +199,9 @@ alternatingBcsFormulaDiagram n =
     namedSubsetGallery k indexedSubsets =
       foldr (|||) mempty $
       map (\(j, subset) -> padY 2 $ padX 1.1 $ namedSubsetDiagram (k, j) subset) indexedSubsets
-        --pure (P (V2 (j*11) (k*11)), subsetDiagram subset)
     namedSubsetDiagram :: (Int, Int) -> Subset -> _
     namedSubsetDiagram kj subset =
-      (subsetDiagram (colourise (simpleColourScheme teal) subset)
+      (subsetDiagram (colourise colourScheme subset)
       `atop`
       (circle 15 # fc white) # lw 0) # named kj
     isExtension :: [Element] -> Bool
@@ -204,6 +212,7 @@ alternatingBcsFormulaDiagram n =
         [InSubset] -> True -- special case
         _ -> False
 
+-- | Proof that sum_j (m choose j) (n choose (k-j)) = (m+n choose k)
 vandermondIdentityDiagram
   :: BCBackend n b
   => ColourScheme
@@ -228,20 +237,36 @@ vandermondIdentityDiagram schemeM schemeN m n k =
         foldr (===) mempty $
         map blockRow subsetsM
 
-testDia
+-- | Proof that k * (n choose k) = n * (n-1 choose k-1)
+bcMultiplicativeIdentityDiagram
   :: BCBackend n b
-  => QDiagram b V2 n Any
-testDia =
-  bcAdditionFormulaDiagram (simpleColourScheme teal) 5 3
-  ===
-  bcComplementFormulaDiagram (simpleColourScheme teal) (simpleColourScheme fuchsia) 5 3
-  ===
-  shiftedBcsFormulaDiagram 2 3
-  ===
-  alternatingBcsFormulaDiagram 5
-  ===
-  vandermondIdentityDiagram schemeM schemeN 4 3 2
+  => ColourScheme -- ^ default scheme
+  -> ColourScheme -- ^ marked scheme
+  -> Int -- ^ n
+  -> Int -- ^ k
+  -> QDiagram b V2 n Any
+bcMultiplicativeIdentityDiagram defaultScheme markedScheme n k =
+  lhs `sepWithRuler` rhs
   where
-    schemeM = ColourScheme { dotColour = darkgreen, selectionColour = green }
-    schemeN = ColourScheme { dotColour = darkred, selectionColour = red }
-    
+    lhs =
+      foldr (|||) mempty $
+      map lhsSubsetCol (binomList n k)
+    chooseOneSelected subset =
+      case subset of
+        [] -> []
+        InSubset : xs ->
+          ((InSubset, markedScheme) : fmap (, defaultScheme) xs) :
+          (((InSubset, defaultScheme) :) <$> chooseOneSelected xs)
+        x : xs -> ((x, defaultScheme) :) <$> chooseOneSelected xs
+    lhsSubsetCol subset =
+      foldr (===) mempty $
+      map (pad 1.3 . subsetDiagram) (chooseOneSelected subset)
+    rhsSubsets = colourise defaultScheme <$> binomList (n-1) (k-1)
+    rhs =
+      foldr (|||) mempty $
+      map rhsCol [0..(n-1)]
+    rhsCol k =
+      foldr (===) mempty $
+      map (pad 1.3 . subsetDiagram . insertAt k (NotInSubset, markedScheme)) rhsSubsets
+    insertAt k x xs =
+      take k xs ++ x : drop k xs
