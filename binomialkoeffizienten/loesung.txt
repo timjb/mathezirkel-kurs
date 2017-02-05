@@ -1,0 +1,91 @@
+Zu Aufgabe 1:
+
+In der oberen Reihe sind alle Möglichkeiten dargestellt, aus fünf Sachen drei auszuwählen. In der unteren Reihe sieht man alle Möglichkeiten, aus fünf Sachen zwei auszuwählen. Die beiden Reihen hängen wie folgt zusammen: In jedem Bild der unteren Reihe sind genau die zwei Punkte ausgewählt, die im Bild darüber ausgewählt sind. (Es ist also das Komplement ausgewählt.) Somit ist das Auswählen von k Sachen aus n ist gleichbedeutend dazu, (n-k) Sachen aus den n Sachen auszuwählen. (Ein Beispiel: Eine Kandidatin bei "Wer wird Millionär" kann entweder versuchen, die richtige Antwort aus den vier zu finden -- oder sie kann probieren die drei beiden falschen ausschließen.) Somit gibt es genau gleich viele Möglichkeiten, k Sachen aus n auszuwählen wie es Möglichkeiten gibt, (n-k) aus n auszuwählen.
+
+
+Zu Aufgabe 2:
+
+Ein Beispiel:
+
+Der kleine Ferdinand kann auf eine Reise leider nur vier seiner sechs Kuscheltiere mitnehmen. Seine Möglichkeiten, vier der sechs auszuwählen, lassen sich in zwei Fälle gruppieren:
+
+1. Entweder er nimmt seinen Plüsch-Tyrannosaurus-Rex mit. Dann muss er noch 3 = 4-1 von den verbleibenden 5 = 6-1 Kuscheltieren mitnehmen.
+
+2. Oder er lässt den Plüsch-Tyrannosaurus-Rex zuhause. Dann kann er noch 4 von den verbleibenden 5 = 6-1 Kuscheltieren mitnehmen.
+
+Die Bilder veranschaulichen die Situation wie folgt: Der graue Punkt steht für den Tyrannosaurus. In der oberen Reihe ist dieser Punkt nie ausgewählt. Dies stellt also den zweiten Fall dar. In der unteren Reihe ist der graue Punkt immer ausgewählt.
+
+Allgemeiner:
+
+Wenn man aus n Sachen k auswählen muss, so kann man sich zuerst entscheiden, ob man eine bestimmte Sache auswählt oder nicht.
+
+* Wenn man sie auswählt, dann muss man noch k-1 der verbleibenden n-1 Sachen auswählen.
+* Wählt man sie nicht aus, so muss man noch k der verbleibenden n-1 Sachen auswählen.
+
+
+Zu Aufgabe 3:
+
+a) Aus der in Aufgabe zwei bewiesenen Formel folgt, dass in jedem Kästchen die Summe der beiden darüberliegenden Kästchen stehen muss. Die Kästchen am linken und rechten Rand enthalten alle eine eins, denn es gibt genau eine Möglichkeit, null aus n Sachen auszuwählen (nämlich, einfach keine Sache auszuwählen), und genau eine Möglichkeit n aus n Sachen auszuwählen (nämlich, einfach alles auszuwählen).
+
+b) Da jedes Kästchen die Summe der beiden darüberliegenden Kästchen enthält, gilt folgendes: Jedes Kästchen einer Reihe trägt genau zweimal zur Gesamtsumme der darunterliegenden Reihe bei, nämlich über das darunterliegende linke und das darunterliegende rechte Kästchen. Somit verdoppelt sich die Gesamtsumme mit jeder weiteren Reihe. Die Gesamtsumme der ersten Reihe ist 1. Die der zweiten Reihe ist also 2, die der dritten 4=2*2, die der vierten ist 8=2*2*2, die der fünften 16=2*2*2*2. Um die Gesamtsumme der n-ten Reihe auszurechnen, müssen wir also n-1 mal 2 mit sich selbst multiplizieren.
+
+c) Die Gesamtsummen der Diagonalen sind die Fibonacci-Zahlen. Das lässt sich wie folgt erklären: Die Rekursionsformel für die Fibonacci-Zahlen besagt ja: Die n-te Fibonacci-Zahl ist die Summe der beiden vorhergehenden Fibonacci-Zahlen. Diese Rekursionsformel können wir im Pascalschen Dreieck wiederfinden: Jedes Kästchen einer Diagonale D hat links und rechts über sich nur Kästchen der beiden vorhergehenden Diagonalen. Jedes Kästchen der beiden vorhergehenden Diagonalen hat andersrum genau eine Verbindung nach unten zur Diagonalen D. Nach der in a) benutzen Formel (die Zahl in einem Kästchen ist die Summe der beiden darüberliegenden Zahlen) folgt somit, das die Gesamtsumme einer geraden gleich der Gesamtsumme beider vorhergehenden Diagonalen ist.
+
+
+Zu Aufgabe 4:
+
+Der Marienkäfer muss genau zehn Kästchen im Gitter entlanglaufen, sieben Kästchen nach rechts und drei Kästchen nach oben. Er muss sich nur entscheiden, welche seiner zehn Schritte er nach oben und welche er nach rechts macht. Er muss also die drei "nach-oben-Schritte" aus seinen zehn Schritten auswählen. Somit gibt es genau 10 über 3, also 120 verschiedene Wege.
+
+
+Zu Aufgabe 5:
+
+Es gibt zwei Möglichkeiten, aus fünf Spielern eine Mannschaft von drei Spielern, darunter einen Kapitän, auszuwählen:
+
+1. Man wählt zunächst drei der fünf Spieler aus. Dann wählt man aus den drei Spielern einen Kapitän aus.
+
+2. Man wählt zunächst einen Kapitän aus den fünf Spielern aus. Dann wählt man zwei weitere Mannschaftsmitglieder aus den verbleibenden vier Spielern aus.
+
+Die erste Möglichkeit ist links von der gestrichelten Linie dargestellt, die zweite rechts der Linie.
+
+1. Jede Spalte auf der linken Spalte zeigt eine Möglichkeit, die drei Mannschaftsmitglieder auszuwählen. (Es gibt also (5 über 3) Spalten.) Die drei Bildchen jeder Spalte zeigen die drei Möglichkeiten, aus den drei Spielern den Kapitän (dargestellt durch die gelbe Mitte) auszuwählen.
+
+2. Jede der fünf Spalten zeigt eine Möglichkeit, den Kapitän aus den fünf Spielern auszuwählen. Die (4 über 2) Bildchen jeder Spalte zeigen die Möglichkeiten, den Kapitän zu einer vollständigen Mannschaft zu ergänzen.
+
+Allgemein gilt: Links gibt es (n über k) Spalten und k Reihen. Rechts gibt es n Spalten und (n-1 über k-1) Reihen.
+
+
+Zu Aufgabe 6:
+
+Aus der Formel folgt:
+  49 über 6 = 49/6 * (48 über 5)
+Um (48 über 5) auszurechnen, können wir die Formel ein weiteres Mal anwenden:
+  49 über 6 = 49/6 * 48/5 * (47 über 4)
+Um (47 über 4) auszurechnen, können wir die Formel noch ein Mal anwenden:
+  49 über 6 = 49/6 * 48/5 * 47/4 * (46 über 3)
+Und so weiter:
+  49 über 6 = 49/6 * 48/5 * 47/4 * 46/3 * (45 über 2)
+  49 über 6 = 49/6 * 48/5 * 47/4 * 46/3 * 45/2 * (44 über 1)
+Und 44 über 1 ist gleich 44 (es gilt immer: n über 1 ist n):
+  49 über 6 = 49/6 * 48/5 * 47/4 * 46/3 * 45/2 * 44
+Dieses Produkt kann man jetzt etwas kürzen und dann in den Taschenrechner eingeben (oder man kann auch sofort den Taschenrechner verwenden). Man erhält auf jeden Fall:
+  49 über 6 = 13983816
+
+
+Zu Aufgabe 7:
+
+TODO
+
+
+Zu Aufgabe 8:
+
+TODO
+
+
+Zu Aufgabe 9:
+
+TODO
+
+
+Zu Aufgabe 10:
+
+TODO
