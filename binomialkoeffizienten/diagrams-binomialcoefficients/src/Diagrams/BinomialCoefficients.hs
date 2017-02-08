@@ -12,6 +12,7 @@ module Diagrams.BinomialCoefficients
   , BCBackend
   , ColourScheme (..)
   , simpleColourScheme
+  , bcDiagram
   , bcAdditionIdentityDiagram
   , bcSymmetryDiagram
   , shiftedBcsIdentityDiagram
@@ -121,6 +122,16 @@ sepWithRuler a b =
   in
     a ||| strutX 4 ||| ruler ||| strutX 4 ||| b
 
+-- | Draws all subsets of size k of an n-element set.
+bcDiagram
+  :: BCBackend n b
+  => ColourScheme
+  -> Int -- ^ n
+  -> Int -- ^ k
+  -> QDiagram b V2 n Any
+bcDiagram colourScheme n k =
+  subsetGallery (colourise colourScheme <$> binomList n k)
+
 -- | Proof that (n+1 choose k+1) = (n choose k) + (n choose k+1)
 bcAdditionIdentityDiagram
   :: BCBackend n b
@@ -164,7 +175,7 @@ shiftedBcsIdentityDiagram
 shiftedBcsIdentityDiagram colourScheme n m =
   foldr (===) mempty $
   map (subsetGallery . map (colourise colourScheme)) $ do
-    i <- [0..m]
+    i <- map (m -) [0..m]
     let prefix = replicate (m - i) Phantom ++ [PerDefaultInSubset]
     [(prefix ++) <$> binomList (n+i) n]
 

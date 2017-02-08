@@ -1,0 +1,155 @@
+\documentclass{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[margin=0.7in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+\begin{document}
+
+\section{Lösung zum Mathezirkelzettel vom 20. Januar 2017}
+
+\textbf{Zu Aufgabe 1:}
+
+In der oberen Reihe sind alle Möglichkeiten dargestellt, aus fünf Sachen drei auszuwählen. In der unteren Reihe sieht man alle Möglichkeiten, aus fünf Sachen zwei auszuwählen. Die beiden Reihen hängen wie folgt zusammen: In jedem Bild der unteren Reihe sind genau die zwei Punkte ausgewählt, die im Bild darüber ausgewählt sind. (Es ist also das Komplement ausgewählt.) Somit ist das Auswählen von $k$ Sachen aus $n$ ist gleichbedeutend dazu, $(n-k)$ Sachen aus den $n$ Sachen auszuwählen. (Ein Beispiel: Eine Kandidatin bei "Wer wird Millionär" kann entweder versuchen, die richtige Antwort aus den vier zu finden -- oder sie kann probieren die drei beiden falschen ausschließen.) Somit gibt es genau gleich viele Möglichkeiten, $k$ Sachen aus $n$ auszuwählen wie es Möglichkeiten gibt, $(n-k)$ aus $n$ auszuwählen.
+
+
+\textbf{Zu Aufgabe 2:}
+
+Ein Beispiel:
+
+Der kleine Ferdinand kann auf eine Reise leider nur vier seiner sechs Kuscheltiere mitnehmen. Seine Möglichkeiten, vier der sechs auszuwählen, lassen sich in zwei Fälle gruppieren:
+
+\begin{itemize}
+  \item Entweder er nimmt seinen Plüsch-Tyrannosaurus-Rex mit. Dann muss er noch $3 = 4-1$ von den verbleibenden $5 = 6-1$ Kuscheltieren mitnehmen.
+  \item Oder er lässt den Plüsch-Tyrannosaurus-Rex zuhause. Dann kann er noch $4$ von den verbleibenden $5 = 6-1$ Kuscheltieren mitnehmen.
+\end{itemize}
+
+Die Bilder veranschaulichen die Situation wie folgt: Der graue Punkt steht für den Tyrannosaurus. In der oberen Reihe ist dieser Punkt nie ausgewählt. Dies stellt also den zweiten Fall dar. In der unteren Reihe ist der graue Punkt immer ausgewählt.
+
+Allgemeiner:
+
+Wenn man aus n Sachen $k$ auswählen muss, so kann man sich zuerst entscheiden, ob man eine bestimmte Sache auswählt oder nicht.
+
+\begin{itemize}
+  \item Wenn man sie auswählt, dann muss man noch $(k-1)$ der verbleibenden $(n-1)$ Sachen auswählen.
+  \item Wählt man sie nicht aus, so muss man noch $k$ der verbleibenden $(n-1)$ Sachen auswählen.
+\end{itemize}
+
+
+\textbf{Zu Aufgabe 3:}
+
+a) Aus der in Aufgabe zwei bewiesenen Formel folgt, dass in jedem Kästchen die Summe der beiden darüberliegenden Kästchen stehen muss. Die Kästchen am linken und rechten Rand enthalten alle eine eins, denn es gibt genau eine Möglichkeit, null aus $n$ Sachen auszuwählen (nämlich, einfach keine Sache auszuwählen), und genau eine Möglichkeit $n$ aus $n$ Sachen auszuwählen (nämlich, einfach alles auszuwählen).
+
+b) Da jedes Kästchen die Summe der beiden darüberliegenden Kästchen enthält, gilt folgendes: Jedes Kästchen einer Reihe trägt genau zweimal zur Gesamtsumme der darunterliegenden Reihe bei, nämlich über das darunterliegende linke und das darunterliegende rechte Kästchen. Somit verdoppelt sich die Gesamtsumme mit jeder weiteren Reihe. Die Gesamtsumme der ersten Reihe ist 1. Die der zweiten Reihe ist also 2, die der dritten $4 = 2 \cdot 2$, die der vierten ist $8 = 2 \cdot 2 \cdot 2$, die der fünften $16 = 2 \cdot 2 \cdot 2 \cdot 2$. Um die Gesamtsumme der n-ten Reihe auszurechnen, müssen wir also $(n-1)$ mal $2$ mit sich selbst multiplizieren.
+
+c) Die Gesamtsummen der Diagonalen sind die Fibonacci-Zahlen. Das lässt sich wie folgt erklären: Die Rekursionsformel für die Fibonacci-Zahlen besagt ja: Die $n$-te Fibonacci-Zahl ist die Summe der beiden vorhergehenden Fibonacci-Zahlen. Diese Rekursionsformel können wir im Pascalschen Dreieck wiederfinden: Jedes Kästchen einer Diagonale D hat links und rechts über sich nur Kästchen der beiden vorhergehenden Diagonalen. Jedes Kästchen der beiden vorhergehenden Diagonalen hat andersrum genau eine Verbindung nach unten zur Diagonalen D. Nach der in a) benutzen Formel (die Zahl in einem Kästchen ist die Summe der beiden darüberliegenden Zahlen) folgt somit, das die Gesamtsumme einer geraden gleich der Gesamtsumme beider vorhergehenden Diagonalen ist.
+
+
+\textbf{Zu Aufgabe 4:}
+
+Der Marienkäfer muss genau zehn Kästchen im Gitter entlanglaufen, sieben Kästchen nach rechts und drei Kästchen nach oben. Er muss sich nur entscheiden, welche seiner zehn Schritte er nach oben und welche er nach rechts macht. Er muss also die drei "`nach-oben-Schritte"' aus seinen zehn Schritten auswählen. Somit gibt es genau $\binom{10}{3} = 120$ (dies kann man aus einem weitergeführten Pascalschen Dreieck ablesen) verschiedene Wege.
+
+
+\textbf{Zu Aufgabe 5:}
+
+Es gibt zwei Möglichkeiten, aus fünf Spielern eine Mannschaft von drei Spielern, darunter einen Kapitän, auszuwählen:
+
+\begin{enumerate}
+  \item Man wählt zunächst drei der fünf Spieler aus. Dann wählt man aus den drei Spielern einen Kapitän aus.
+  \item Man wählt zunächst einen Kapitän aus den fünf Spielern aus. Dann wählt man zwei weitere Mannschaftsmitglieder aus den verbleibenden vier Spielern aus.
+\end{enumerate}
+
+Die erste Möglichkeit ist links von der gestrichelten Linie dargestellt, die zweite rechts der Linie.
+
+\begin{enumerate}
+  \item Jede Spalte auf der linken Spalte zeigt eine Möglichkeit, die drei Mannschaftsmitglieder auszuwählen. (Es gibt also $\binom{5}{3}$ Spalten.) Die drei Bildchen jeder Spalte zeigen die drei Möglichkeiten, aus den drei Spielern den Kapitän (dargestellt durch die gelbe Mitte) auszuwählen.
+  \item Jede der fünf Spalten zeigt eine Möglichkeit, den Kapitän aus den fünf Spielern auszuwählen. Die $\binom{4}{2}$ Bildchen jeder Spalte zeigen die Möglichkeiten, den Kapitän zu einer vollständigen Mannschaft zu ergänzen.
+\end{enumerate}
+
+Allgemein gilt: Links gibt es $\binom{n}{k}$ Spalten und k Reihen. Rechts gibt es n Spalten und $\binom{n-1}{k-1}$ Reihen.
+
+
+\textbf{Zu Aufgabe 6:}
+
+Aus der Formel folgt:
+\[ \binom{49}{6} = \frac{49}{6} \cdot \binom{48}{5} \]
+Um $\binom{48}{5}$ auszurechnen, können wir die Formel ein weiteres Mal anwenden:
+\[ \binom{49}{6} = \frac{49}{6} \cdot \frac{48}{5} \cdot \binom{47}{4} \]
+Um $\binom{47}{4}$ auszurechnen, können wir die Formel noch ein Mal anwenden:
+\[ \binom{49}{6} = \frac{49}{6} \cdot \frac{48}{5} \cdot \frac{47}{4} \cdot \binom{46}{3} \]
+Und so weiter:
+\[ \binom{49}{6} = \frac{49}{6} \cdot \frac{48}{5} \cdot \frac{47}{4} \cdot \frac{46}{3} \cdot \binom{45}{2} \]
+\[ \binom{49}{6} = \frac{49}{6} \cdot \frac{48}{5} \cdot \frac{47}{4} \cdot \frac{46}{3} \cdot \frac{45}{2} \cdot \binom{44}{1} \]
+Und es gilt $\binom{44}{1} = 44$ (es gilt immer: $\binom{n}{1} = n$), also:
+\[ \binom{49}{6} = \frac{49}{6} \cdot \frac{48}{5} \cdot \frac{47}{4} \cdot \frac{46}{3} \cdot \frac{45}{2} \cdot 44 \]
+Dieses Produkt kann man jetzt etwas kürzen und dann in den Taschenrechner eingeben (oder man kann auch sofort den Taschenrechner verwenden). Man erhält auf jeden Fall:
+\[ \binom{49}{6} = 13983816 \]
+
+
+\textbf{Zu Aufgabe 7:}
+
+Angenommen, du willst $(n+1)$ Sachen von $(n+m+1)$ Sachen auswählen. Stelle dir diese Sachen aufgereiht in einer Reihe vor. Nun gibt es mehrere Möglichkeiten, davon $(n+1)$ auszuwählen:
+
+\begin{enumerate}
+  \item[1.] Wähle die erste Sache (in der Reihe) aus. Wähle aus den verbleibenden $(n+m)$ Sachen noch $n$ weitere aus.
+  \item[2.] Wähle die erste Sache (in der Reihe) nicht aus, dafür aber die zweite. Wähle aus den verbleibenden $(n+m-1)$ Sachen noch $n$ weitere aus.
+  \item[3.] Wähle die erste und die zweite Sache (in der Reihe) nicht aus, dafür aber die dritte. Wähle aus den verbleibenden $(n+m-2)$ Sachen noch $n$ weitere aus.
+\end{enumerate}
+
+usw.
+
+\begin{enumerate}
+  \item[m+1.] Wähle die ersten m Sachen (in der Reihe) nicht aus, aber die (m+1)-te. Wähle aus den verbleibenden n Sachen alle aus.
+\end{enumerate}
+
+Dies ist in der Zeichnung illustriert: Wir stellen uns die Punkte im Uhrzeigersinn geordnet vor, beginnend bei dem obersten.
+In der ersten Reihe ist immer der oberste Punkt ausgewählt und noch dazu $n=2$ der weiteren $n+m=5$ Punkte. In der zweiten Reihe ist der oberste Punkt immer nicht ausgewählt aber dafür der zweite (rechts oben). Außerdem sind in der zweiten Reihe n=2 der verbleibenden $n+m-1=4$ Punkte ausgewählt.
+In der dritten Reihe sind die ersten beiden (der oberste Punkt und der Punkt oben rechts) nicht ausgewählt, dafür aber der dritte Punkt (der Punkt unten rechts). Des weiteren sind $n=2$ der verbleibenden $n+m-2=3$ Punkte ausgewählt.
+In der vierten Reihe sind die ersten drei Punkt nicht ausgewählt, dafür aber der vierte und die verbleibenden $n=2$ Punkte.
+
+
+\textbf{Zu Aufgabe 8:}
+
+Wie können wir aus m=4 roten und $n=3$ grünen Sachen $k=3$ auswählen?
+Die Auswahlmöglichkeiten lassen sich in vier Gruppen einteilen:
+
+\begin{itemize}
+  \item 1. Gruppe: Wir wählen nur rote Sachen aus. Dafür gibt es $\binom{4}{3} \cdot \binom{3}{0} = 4 \cdot 1 = 4$ Möglichkeiten. Diese sind im linken Abschnitt dargestellt.
+  \item 2. Gruppe: Wir wählen $n-1=2$ rote Sachen (dafür gibt es (4 über 2) Möglichkeiten) und 1 grüne Sache ($\binom{3}{1}$ Möglichkeiten) aus. Die Gesamtzahl solcher Auswahlen ist das Produkt $\binom{4}{2} \cdot \cdot{3}{1} = 6 \cdot 3 = 18$ Möglichkeiten. Diese sind im zweiten Abschnitt aufgelistet.
+  \item 3. Gruppe: Wir wählen $n-2=1$ rote Sachen ($\binom{4}{1}$ Möglichkeiten) und 2 grüne Sachen ($\binom{3}{2}$ Möglichkeiten) aus. Insgesamt gibt es $\binom{4}{1} \cdot \binom{3}{2} = 4 \cdot 3 = 12$ Möglichkeiten in dieser Gruppe. Diese sind im dritten Abschnitt dargestellt.
+  \item 4. Gruppe: Wir wählen nur grüne Sachen aus. Dafür gibt es $\binom{4}{0} \cdot \binom{3}{3} = 1 \cdot 1 = 1$ Möglichkeit, zu sehen im vierten Abschnitt.
+\end{itemize}
+
+Allgemein: In der Gruppe, in der wir $q$ rote Sachen und $(k-q)$ grüne Sachen auswählen, gibt es insgesamt $\binom{m}{q} \cdot \binom{m}{k-q}$ Möglichkeiten. Die Gesamtzahl der Möglichkeiten aller Gruppen von $q=0$ bis $q=k$ ist die Gesamtzahl der Möglichkeiten, aus $(m+n)$ Sachen $k$ viele auszuwählen. Somit stimmt die Formel.
+
+
+\textbf{Zu Aufgabe 9:}
+
+Wenn man $(x+y)^n$ ausschreibt, so erhält man mit dem Distributivgesetz (Verteilungsgesetz):
+
+\begin{align*}
+  & (x+y)^2 = xx + xy + yx + yy \\
+  & (x+y)^3 = xxx + xxy + xyx + xyy + yxx + yxy + yyx + yyy
+\end{align*}
+
+(Dabei haben wir die Multiplikationspunkte weggelassen.) Allgemein ist $(x+y)^n$ die Summe von allen "`Ketten"' der Länge n von X-en und Ypsilons.
+Da die Multiplikation kommutativ ist (d.h. wir dürfen die X-en und die Ypsilons umordnen), haben alle "`Ketten"' der Länge n bestehend aus $k$ X-en und $(n-k)$ Ypsilons den Wert $x^k \cdot y^{n-k}$.
+Wie viele Ketten bestehend aus $k$ X-en und $(n-k)$ Ypsilons gibt es? Antwort: Genau so viele, wie es Möglichkeiten gibt, k Positionen aus $n$ Stück auszuwählen, also $\binom{n}{k}$ viele.
+Somit ergibt sich die Formel.
+
+
+\textbf{Zu Aufgabe 10:}
+
+(Halte das Blatt, wie im Tipp beschrieben, 90 Grad nach links gedreht.)
+
+Jede Reihe des Bildes listet die Möglichkeiten auf, k Sachen aus n auszuwählen (für $k=0$ bis $k=n$). Die Behauptung ist, dass die Anzahl der Möglichkeiten in den ungeraden Zeilen abzüglich der Anzahl der Möglichkeiten in den geraden Zeilen gleich null ist. Anders ausgedrückt: es gibt genau so viele Möglichkeiten in den geraden wie in den ungeraden Zeilen. Dies können wir beweisen, indem wir Paare von Möglichkeiten bilden, jeweils einer in einer geraden und einer in einer ungeraden Zeile und zeigen, dass es keine übrigen Möglichkeiten gibt. Im Bild sind diese Paare durch die Verbindungslinien markiert.
+
+Nach welchem Prinzip wurden die Paare gebildet? Wir stellen uns die Punkte einer jeden Möglichkeit im Uhrzeigersinn geordnet vor, beginnend bei dem oberen Punkt. Falls nach dem ersten (gemäß dieser Ordnung) ausgewähltem Punkt einer Möglichkeit, k Punkte von n Stück auszuwählen, ein nicht ausgewählter Punkt folgt, so verbinden wir diese Möglichkeit mit der Möglichkeit, die man erhält, wenn man diesen Punkt auch noch auswählt.
+Oder andersrum: Wenn nach dem ersten ausgewählten Punkt ein weiterer ausgewählter Punkt folgt, so ist der Partner die Möglichkeit, bei der dieser weitere Punkt eben nicht ausgewählt ist.
+
+Diese Regel hat eine Ausnahme, nämlich das Paar bestehend aus der leeren Auswahl und der Auswahl des obersten Punktes.
+
+\end{document}

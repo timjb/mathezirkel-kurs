@@ -33,7 +33,7 @@
  \put(0,-1){  \vbox{  Mathesch\"ulerzirkel\\
    Universit\"at Augsburg\\
   #1 }}
- \put(13,-2){\includegraphics[scale=0.10]{gregor} }
+ \put(15,-2){\includegraphics[scale=0.10]{gregor} }
 \end{picture} \vspace*{1.7cm}
   \begin{center}\Large \textbf{Zirkelzettel vom #2}
   \end{center}
